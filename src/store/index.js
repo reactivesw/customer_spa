@@ -1,9 +1,6 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
-import fetchProducts from './api';
-
-/* eslint-disable no-console */
-console.log(fetchProducts);
+import { fetchProducts } from './api';
 
 Vue.use(Vuex);
 
@@ -22,7 +19,6 @@ const store = new Vuex.Store({
 
   mutations: {
     SET_PRODUCTS: (state, { products }) => {
-      console.log(products);
       products.results.forEach((product) => {
         if (product) {
           Vue.set(state.products, product.id, product);

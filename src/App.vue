@@ -1,17 +1,21 @@
 <template>
-  <div id="app">
-    <img src="./assets/logo.png">
+  <div>
+    <layout-navbar></layout-navbar>
     <router-view></router-view>
+    <layout-footer></layout-footer>
   </div>
 </template>
 
-<style>
-#app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
-</style>
+<style src="./styles/main.scss" lang="scss"></style>
+
+<script>
+  import LayoutNavbar from './components/Navbar';
+  import LayoutFooter from './components/Footer';
+
+  export default {
+    components: {
+      LayoutNavbar,
+      LayoutFooter,
+    },
+  };
+</script>
