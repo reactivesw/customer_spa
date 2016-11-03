@@ -9,6 +9,7 @@ var proxyMiddleware = require('http-proxy-middleware')
 var webpackConfig = process.env.NODE_ENV === 'testing'
   ? require('./webpack.prod.conf')
   : require('./webpack.dev.conf')
+var OAuth2 = require('./oauth2')
 
 // default port where dev server listens for incoming traffic
 var port = process.env.PORT || config.dev.port
@@ -17,6 +18,25 @@ var port = process.env.PORT || config.dev.port
 var proxyTable = config.dev.proxyTable
 
 var app = express()
+
+// get access token
+app.get('/token', function(req, res) {
+  var oa = new OAuth2({
+    config: {
+      client_id: "rz2l5-Pqf4QJ8hSoZm5qxcPd",
+      client_secret: "lJkxRUVwc0C6dVdxDA-oSYqzWGeANGFm",
+      project_key: "alans-store-0",
+      grant_type: "client_credentials",
+      scope: "view_products:alans-store-0 manage_my_profile:alans-store-0 manage_my_orders:alans-store-0 create_anonymous_token:alans-store-0"
+    },
+    host: 'auth.sphere.io',
+    accessTokenUrl: '/oauth/token'
+  })
+  oa.getAccessToken(function(error, response, body) {
+    res.json(response)
+  })
+})
+
 var compiler = webpack(webpackConfig)
 
 var devMiddleware = require('webpack-dev-middleware')(compiler, {
