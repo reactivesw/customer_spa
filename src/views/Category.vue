@@ -11,11 +11,19 @@ export default {
       return JSON.stringify(this.$store.state.product.products);
     },
   },
-  beforeRouteEnter(to, from, next) {
-    next((that) => {
-      const categorySlug = that.$route.params.slug;
-      that.$store.dispatch('FETCH_PRODUCTS', { categorySlug });
-    });
+  watch: {
+    $route() {
+      this.fetchProducts();
+    },
+  },
+  created() {
+    this.fetchProducts();
+  },
+  methods: {
+    fetchProducts() {
+      const categorySlug = this.$route.params.slug;
+      this.$store.dispatch('FETCH_PRODUCTS', { categorySlug });
+    },
   },
 };
 </script>
