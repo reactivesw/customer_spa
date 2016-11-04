@@ -7,4 +7,7 @@ new Vue({
   el: '#app',
   store,
   router,
+  created() {
+    store.dispatch('FETCH_CATEGORIES');
+  },
 });

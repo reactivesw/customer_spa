@@ -8,13 +8,12 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" href="#"
-               th:href="@{/}">Site name</a>
+            <router-link :to="{ name: 'home' }" class="navbar-brand">Site name</router-link>
         </div>
         <div id="navbar" class="navbar-collapse collapse">
             <ul class="nav navbar-nav navbar-left">
-                <li th:each="item : ${MENUS}">
-                    <a href="#">All</a>
+                <li v-for="category of sortedCategories">
+                    <router-link :to="{ name: 'category', params: { slug: category.slug.en }}">{{category.name.en}}</a>
                 </li>
             </ul>
 
@@ -36,3 +35,16 @@
     </div>
   </nav>
 </template>
+
+<script>
+  export default {
+    computed: {
+      sortedCategories() {
+        const categories = this.$store.state.category.categories;
+        const sorted = Object.keys(categories).map(key => categories[key])
+        .sort((one, another) => one.orderHint < another.orderHint);
+        return sorted;
+      },
+    },
+  };
+</script>

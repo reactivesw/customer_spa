@@ -1,30 +1,18 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
-import { fetchProducts } from './api';
+import moduleProdcut from './modules/product';
+import moduleCategory from './modules/category';
 
 Vue.use(Vuex);
 
-/* eslint-disable no-param-reassign */
 const store = new Vuex.Store({
   state: {
-    products: {},
+    lang: 'en',
   },
 
-  actions: {
-    FETCH_PRODUCTS: ({ commit }) => {
-      fetchProducts()
-      .then((products) => { commit('SET_PRODUCTS', { products }); });
-    },
-  },
-
-  mutations: {
-    SET_PRODUCTS: (state, { products }) => {
-      products.results.forEach((product) => {
-        if (product) {
-          Vue.set(state.products, product.id, product);
-        }
-      });
-    },
+  modules: {
+    product: moduleProdcut,
+    category: moduleCategory,
   },
 });
 
