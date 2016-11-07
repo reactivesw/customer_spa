@@ -23,9 +23,12 @@ export default {
   },
   methods: {
     fetchProducts() {
+      this.$Progress.start();
+      this.$Progress.set(20);
       apiFetchProducts(this.$store.state.route.params.id)
       .then((res) => {
         this.products = res.results;
+        this.$Progress.finish();
       });
     },
   },
