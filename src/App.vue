@@ -6,8 +6,6 @@
   </div>
 </template>
 
-<style src="./styles/main.scss" lang="scss"></style>
-
 <script>
   import LayoutNavbar from './components/Navbar';
   import LayoutFooter from './components/Footer';

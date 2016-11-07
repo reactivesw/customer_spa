@@ -1,37 +1,35 @@
 <template>
-  <nav class="navbar navbar-default navbar-fixed-top" role="navigation">
+  <nav class="navbar navbar-fixed-top navbar-dark bg-inverse">
     <div class="container">
-        <div class="navbar-header">
-            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
-                <span class="sr-only">Toggle navigation</span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-            </button>
-            <router-link :to="{ name: 'home' }" class="navbar-brand">Site name</router-link>
-        </div>
-        <div id="navbar" class="navbar-collapse collapse">
-            <ul class="nav navbar-nav navbar-left">
-                <li v-for="category of sortedCategories">
-                    <router-link :to="{ name: 'category', params: { id: category.id }}">{{category.name[$store.state.lang]}}</a>
-                </li>
-            </ul>
+      <button class="navbar-toggler hidden-lg-up" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation"></button>
+      <div class="collapse navbar-toggleable-md" id="navbarResponsive">
+        <router-link :to="{ name: 'home' }" class="navbar-brand">Site name</router-link>
 
-            <ul class="nav navbar-nav navbar-right">
-                <li class="js-navaccount-login" style="display:none;"><a>{User Name}</a></li>
-                <li class="js-navaccount-guest"><a>Log In</a></li>
-                <li class="js-navaccount-guest"><a href="/signup">Sign Up</a></li>
-                <li><a>Cart</a></li>
-            </ul>
-            <form class="navbar-form navbar-right">
-                <div class="input-group">
-                    <input type="text" class="form-control" required="required" name="keywords"  />
-                    <div class="input-group-btn">
-                        <button type="submit" class="btn btn-default"><i class="glyphicon glyphicon-search"></i></button>
-                    </div>
-                </div>
-            </form>
-        </div><!--/.navbar-collapse -->
+        <ul class="nav navbar-nav">
+            <router-link
+            class="nav-item"
+            active-class="active"
+            tag="li"
+            v-for="category of sortedCategories"
+            :to="{ name: 'category', params: { id: category.id }}">
+            <a class="nav-link">{{category.name[$store.state.lang]}}</a>
+            </router-link>
+        </ul>
+
+        <ul class="nav navbar-nav float-lg-right">
+            <li class="nav-item" style="display:none;"><a class="nav-link">{User Name}</a></li>
+            <li class="nav-item"><a class="nav-link">Log In</a></li>
+            <li class="nav-item"><a class="nav-link">Sign Up</a></li>
+            <li class="nav-item"><a class="nav-link">Cart</a></li>
+        </ul>
+        
+        <form class="form-inline float-lg-right">
+            <input class="form-control" type="text" placeholder="Search">
+            <button class="btn btn-outline-secondary">
+              <i class="fa fa-search" aria-hidden="true"></i>
+            </button>
+        </form>
+      </div>
     </div>
   </nav>
 </template>
