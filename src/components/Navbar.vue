@@ -20,7 +20,7 @@
             <ul class="nav navbar-nav navbar-right">
                 <li class="js-navaccount-login" style="display:none;"><a>{User Name}</a></li>
                 <li class="js-navaccount-guest"><a>Log In</a></li>
-                <li class="js-navaccount-guest"><a>Sign Up</a></li>
+                <li class="js-navaccount-guest"><a href="/signup">Sign Up</a></li>
                 <li><a>Cart</a></li>
             </ul>
             <form class="navbar-form navbar-right">
@@ -36,6 +36,7 @@
   </nav>
 </template>
 
+
 <script>
   export default {
     computed: {
@@ -48,3 +49,4 @@
     },
   };
 </script>
+
