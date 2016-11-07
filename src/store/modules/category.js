@@ -4,22 +4,21 @@ import { fetchCategories } from '../api';
 /* eslint-disable no-param-reassign */
 export default {
   state: {
-    fetching: false,
     promise: null,
     categories: {},
   },
 
   actions: {
     FETCH_CATEGORIES: ({ commit, state }) => {
-      if (Object.keys(state.categories).length > 0 || state.fetching) {
+      const fetching = state.promise != null;
+      if (Object.keys(state.categories).length > 0 || fetching) {
         return state.promise;
       }
-      const promise = fetchCategories()
-      .then((categories) => {
-        commit('SET_CATEGORIES_FETCHING', false);
+      const promise = fetchCategories().then((categories) => {
+        commit('SET_CATEGORIES_PROMISE', { promise: null });
         commit('SET_CATEGORIES', { categories });
       });
-      commit('SET_CATEGORIES_FETCHING', { fetching: true, promise });
+      commit('SET_CATEGORIES_PROMISE', { promise });
       return promise;
     },
   },
@@ -27,13 +26,10 @@ export default {
   mutations: {
     SET_CATEGORIES: (state, { categories }) => {
       categories.results.forEach((category) => {
-        if (category) {
-          Vue.set(state.categories, category.id, category);
-        }
+        Vue.set(state.categories, category.id, category);
       });
     },
-    SET_CATEGORIES_FETCHING(state, { fetching, promise }) {
-      state.fetching = fetching;
+    SET_CATEGORIES_PROMISE(state, { promise }) {
       state.promise = promise;
     },
   },

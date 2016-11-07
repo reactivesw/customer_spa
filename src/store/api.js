@@ -3,8 +3,16 @@ import VueResource from 'vue-resource';
 
 Vue.use(VueResource);
 
+/* eslint-disable no-undef */
+function getCookieValue(a) {
+  const b = window.document.cookie.match(`(^|;)\\s*${a}\\s*=\\s*([^;]+)`);
+  return b ? b.pop() : '';
+}
+
+const anonymousToken = getCookieValue('anonymousToken');
+
 const apiUrl = 'https://api.sphere.io/alans-store-0';
-Vue.http.headers.common.Authorization = 'Bearer bd7Y6fwnJSNfmIMkj7j78hvZUIs2GJmC';
+Vue.http.headers.common.Authorization = `Bearer ${anonymousToken}`;
 
 export function fetchProducts(id) {
   return Vue.http.get(`${apiUrl}/product-projections/search`, {

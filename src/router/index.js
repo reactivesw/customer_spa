@@ -14,10 +14,9 @@ const routes = [
     component: App,
     children: [
       { name: 'home', path: 'home', component: Home },
-      { name: 'category', path: 'category/:slug', component: Category },
+      { name: 'category', path: 'category/:id', component: Category },
       { path: 'signup', component: SignUp },
       { path: 'signin', component: SignIn },
-
       { path: '*', redirect: { path: 'home' } },
     ],
   },

@@ -5,11 +5,13 @@
 </template>
 
 <script>
+import { fetchProducts as apiFetchProducts } from '../store/api';
+
 export default {
-  computed: {
-    products() {
-      return JSON.stringify(this.$store.getters.currentCategoryProducts);
-    },
+  data() {
+    return {
+      products: {},
+    };
   },
   watch: {
     $route() {
@@ -21,7 +23,10 @@ export default {
   },
   methods: {
     fetchProducts() {
-      this.$store.dispatch('FETCH_CURRENT_PRODUCTS');
+      apiFetchProducts(this.$store.state.route.params.id)
+      .then((res) => {
+        this.products = res.results;
+      });
     },
   },
 };

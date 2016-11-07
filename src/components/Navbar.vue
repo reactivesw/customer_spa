@@ -13,7 +13,7 @@
         <div id="navbar" class="navbar-collapse collapse">
             <ul class="nav navbar-nav navbar-left">
                 <li v-for="category of sortedCategories">
-                    <router-link :to="{ name: 'category', params: { slug: category.slug.en }}">{{category.name.en}}</a>
+                    <router-link :to="{ name: 'category', params: { id: category.id }}">{{category.name[$store.state.lang]}}</a>
                 </li>
             </ul>
 

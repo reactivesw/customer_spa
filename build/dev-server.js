@@ -3,6 +3,7 @@ var config = require('../config')
 if (!process.env.NODE_ENV) process.env.NODE_ENV = config.dev.env
 var path = require('path')
 var express = require('express')
+var cookieParser = require('cookie-parser')
 var webpack = require('webpack')
 var opn = require('opn')
 var proxyMiddleware = require('http-proxy-middleware')
@@ -18,24 +19,32 @@ var port = process.env.PORT || config.dev.port
 var proxyTable = config.dev.proxyTable
 
 var app = express()
+app.use(cookieParser())
 
-// get access token
-app.get('/token', function(req, res) {
-  var oa = new OAuth2({
-    config: {
-      client_id: "rz2l5-Pqf4QJ8hSoZm5qxcPd",
-      client_secret: "lJkxRUVwc0C6dVdxDA-oSYqzWGeANGFm",
-      project_key: "alans-store-0",
-      grant_type: "client_credentials",
-      scope: "view_products:alans-store-0 manage_my_profile:alans-store-0 manage_my_orders:alans-store-0 create_anonymous_token:alans-store-0"
-    },
-    host: 'auth.sphere.io',
-    accessTokenUrl: '/oauth/token'
-  })
-  oa.getAccessToken(function(error, response, body) {
-    res.json(response)
-  })
-})
+app.use(function (req, res, next) {
+  // check if client sent anonymousToken cookie.
+  var cookie = req.cookies.anonymousToken;
+  if (cookie === undefined)
+  {
+    var oa = new OAuth2({
+      config: {
+        client_id: "rz2l5-Pqf4QJ8hSoZm5qxcPd",
+        client_secret: "lJkxRUVwc0C6dVdxDA-oSYqzWGeANGFm",
+        project_key: "alans-store-0",
+        grant_type: "client_credentials",
+        scope: "view_products:alans-store-0 manage_my_profile:alans-store-0 manage_my_orders:alans-store-0 create_anonymous_token:alans-store-0"
+      },
+      host: 'auth.sphere.io',
+      accessTokenUrl: '/oauth/token'
+    });
+    oa.getAccessToken(function(error, response, body) {
+      res.cookie('anonymousToken',body.access_token, { maxAge: body.expires_in, httpOnly: false });
+      next();
+    });
+  } else {
+    next();
+  }
+});
 
 var compiler = webpack(webpackConfig)
 
