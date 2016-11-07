@@ -1,35 +1,45 @@
 import Vue from 'vue';
 import { fetchProducts } from '../api';
 
+/* eslint-disable no-param-reassign */
 export default {
   state: {
-    products: {},
+    categories: {},
   },
 
   actions: {
-    FETCH_PRODUCTS: ({ commit, state, rootState, dispatch }, { categorySlug }) =>
-      new Promise((resolve) => {
+    FETCH_CURRENT_PRODUCTS: ({ commit, state, rootState, dispatch }) => {
+      const categorySlug = rootState.route.params.slug;
+
+      return new Promise((resolve) => {
         dispatch('FETCH_CATEGORIES')
         .then(() => {
-          const id = Object.keys(rootState.category.categories).find(key =>
+          const categoryId = Object.keys(rootState.category.categories).find(key =>
             rootState.category.categories[key].slug.en === categorySlug
           );
-          fetchProducts(id)
+          if (state.categories[categoryId]) {
+            resolve();
+            return;
+          }
+          fetchProducts(categoryId)
           .then((products) => {
-            commit('SET_PRODUCTS', { products });
-            resolve(products);
+            commit('SET_PRODUCTS', { categoryId, products });
+            resolve();
           });
         });
-      }),
+      });
+    },
   },
 
   mutations: {
-    SET_PRODUCTS: (state, { products }) => {
+    SET_PRODUCTS: (state, { categoryId, products }) => {
+      const productsDic = {};
       products.results.forEach((product) => {
         if (product) {
-          Vue.set(state.products, product.id, product);
+          productsDic[product.id] = product;
         }
       });
+      Vue.set(state.categories, categoryId, productsDic);
     },
   },
 };

@@ -8,7 +8,7 @@
 export default {
   computed: {
     products() {
-      return JSON.stringify(this.$store.state.product.products);
+      return JSON.stringify(this.$store.getters.currentCategoryProducts);
     },
   },
   watch: {
@@ -21,8 +21,7 @@ export default {
   },
   methods: {
     fetchProducts() {
-      const categorySlug = this.$route.params.slug;
-      this.$store.dispatch('FETCH_PRODUCTS', { categorySlug });
+      this.$store.dispatch('FETCH_CURRENT_PRODUCTS');
     },
   },
 };
